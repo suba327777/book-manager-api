@@ -3,7 +3,7 @@
  */
 package com.book.manager.bookmanager.infrastructure.database.record
 
-import com.book.manager.bookmanager.domain.enum.RoleType
+import com.book.manager.bookmanager.domain.Enum.RoleType
 
 data class UserRecord(
     var id: Long? = null,
