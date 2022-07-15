@@ -31,7 +31,7 @@
         </javaClientGenerator>
         <table tableName="%">
             <columnOverride column="role_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler"
-                            javaType="com.book.manager.bookmanager.domain.enum.RoleType"/>
+                            javaType="com.book.manager.bookmanager.domain.Enum.RoleType"/>
         </table>
     </context>
 </generatorConfiguration>
