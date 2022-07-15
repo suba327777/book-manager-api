@@ -4,16 +4,20 @@ import com.book.manager.bookmanager.domain.model.Book
 import com.book.manager.bookmanager.domain.model.BookWithRental
 import com.book.manager.bookmanager.domain.model.Rental
 import com.book.manager.bookmanager.domain.repositoory.BookRepoository
+import com.book.manager.bookmanager.infrastructure.database.mapper.BookMapper
 import com.book.manager.bookmanager.infrastructure.database.mapper.custom.BookWithRentalMapper
 import com.book.manager.bookmanager.infrastructure.database.mapper.custom.select
 import com.book.manager.bookmanager.infrastructure.database.mapper.custom.selectByPrimaryKey
 import com.book.manager.bookmanager.infrastructure.database.record.custom.BookWithRentalRecord
+import com.book.manager.bookmanager.infrastructure.database.mapper.insert
+import com.book.manager.bookmanager.infrastructure.database.record.BookRecord
 import org.springframework.stereotype.Repository
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
 class BookRepositoryImpl(
-     val bookWithRentalMapper : BookWithRentalMapper
+     private val bookWithRentalMapper : BookWithRentalMapper,
+     private val bookMapper:BookMapper
 ):BookRepoository{
 
      override fun findAllWithRental(): List<BookWithRental> {
@@ -24,6 +28,10 @@ class BookRepositoryImpl(
      override fun findWithRental(id: Long): BookWithRental? {
           //データを取得できなかった場合はnullを返却
           return bookWithRentalMapper.selectByPrimaryKey(id)?.let { toModel(it) }
+     }
+
+     override fun register(book: Book) {
+          bookMapper.insert(toRecord(book))
      }
      private fun toModel(record: BookWithRentalRecord): BookWithRental {
           val book = Book(
@@ -41,5 +49,9 @@ class BookRepositoryImpl(
                )
           }
           return BookWithRental(book, rental)
+     }
+     //Book(model)クラスからBookRecord(テーブルのカラム)クラスに変換
+     private fun toRecord(model:Book): BookRecord {
+          return BookRecord(model.id,model.title,model.author,model.releaseDate)
      }
 }
