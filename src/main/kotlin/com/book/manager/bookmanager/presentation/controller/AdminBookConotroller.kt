@@ -5,6 +5,8 @@ import com.book.manager.bookmanager.domain.model.Book
 import com.book.manager.bookmanager.presentation.form.RegisterBookRequest
 import com.book.manager.bookmanager.presentation.form.UpdateBookRequest
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -30,4 +32,9 @@ class AdminBookConotroller(private val adminBookService: AdminBookService) {
     fun update(@RequestBody request:UpdateBookRequest){
         adminBookService.update(request.id,request.title,request.author,request.releaseDate)
     }
+    @DeleteMapping("/delete/{book_id}")
+    fun delete(@PathVariable("book_id") bookId:Long){
+        adminBookService.delete(bookId)
+    }
+
 }
