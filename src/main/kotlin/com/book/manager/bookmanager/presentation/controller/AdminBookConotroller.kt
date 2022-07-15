@@ -3,8 +3,10 @@ package com.book.manager.bookmanager.presentation.controller
 import com.book.manager.bookmanager.application.service.AdminBookService
 import com.book.manager.bookmanager.domain.model.Book
 import com.book.manager.bookmanager.presentation.form.RegisterBookRequest
+import com.book.manager.bookmanager.presentation.form.UpdateBookRequest
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -23,5 +25,9 @@ class AdminBookConotroller(private val adminBookService: AdminBookService) {
                 request.releaseDate
             )
         )
+    }
+    @PutMapping("/update")
+    fun update(@RequestBody request:UpdateBookRequest){
+        adminBookService.update(request.id,request.title,request.author,request.releaseDate)
     }
 }

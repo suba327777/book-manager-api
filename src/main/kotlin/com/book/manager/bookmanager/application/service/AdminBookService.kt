@@ -4,6 +4,7 @@ import com.book.manager.bookmanager.domain.model.Book
 import com.book.manager.bookmanager.domain.repositoory.BookRepoository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 
 @Service
 class AdminBookService(private val bookRepoository: BookRepoository) {
@@ -13,5 +14,12 @@ class AdminBookService(private val bookRepoository: BookRepoository) {
         bookRepoository.findWithRental(book.id)?.let { throw java.lang.IllegalArgumentException("既に存在する書籍ID:${book.id}") }
         //なかった場合はbookをそのまま渡している
         bookRepoository.register(book)
+    }
+    @Transactional
+    fun update(bookId:Long,title:String?,author:String?,releaseDate:LocalDate?){
+        //書籍情報を検索し、存在しなかった場合は例外を渡す
+        bookRepoository.findWithRental(bookId)?:throw IllegalArgumentException("存在しない書籍ID:${bookId}")
+        //存在する場合はupdate実行
+        bookRepoository.update(bookId,title,author,releaseDate)
     }
 }

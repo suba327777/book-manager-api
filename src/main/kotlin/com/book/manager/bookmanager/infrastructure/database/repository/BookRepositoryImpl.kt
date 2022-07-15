@@ -10,8 +10,10 @@ import com.book.manager.bookmanager.infrastructure.database.mapper.custom.select
 import com.book.manager.bookmanager.infrastructure.database.mapper.custom.selectByPrimaryKey
 import com.book.manager.bookmanager.infrastructure.database.record.custom.BookWithRentalRecord
 import com.book.manager.bookmanager.infrastructure.database.mapper.insert
+import com.book.manager.bookmanager.infrastructure.database.mapper.updateByPrimaryKeySelective
 import com.book.manager.bookmanager.infrastructure.database.record.BookRecord
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
 
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
@@ -32,6 +34,11 @@ class BookRepositoryImpl(
 
      override fun register(book: Book) {
           bookMapper.insert(toRecord(book))
+     }
+     //?となっているのは更新が必要な場所を自由に設定できるようにするため
+     //nullが入ってきたカラムは更新されない
+     override fun update(id: Long, title: String?, author: String?, releaseDate: LocalDate?) {
+          bookMapper.updateByPrimaryKeySelective(BookRecord(id,title,author,releaseDate))
      }
      private fun toModel(record: BookWithRentalRecord): BookWithRental {
           val book = Book(
