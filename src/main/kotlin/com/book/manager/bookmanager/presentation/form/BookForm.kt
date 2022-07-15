@@ -30,3 +30,9 @@ data class RentalInfo(val userId:Long,val rentalDatetime:LocalDateTime,val retur
         rental.returnDeadline
     )
 }
+data class RegisterBookRequest(
+    val id:Long,
+    val title:String,
+    val author:String,
+    val releaseDate: LocalDate
+)
