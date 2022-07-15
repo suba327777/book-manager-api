@@ -22,4 +22,11 @@ class AdminBookService(private val bookRepoository: BookRepoository) {
         //存在する場合はupdate実行
         bookRepoository.update(bookId,title,author,releaseDate)
     }
+    @Transactional
+    fun delete(bookId: Long){
+        //書籍情報を検索し、存在しなかった場合は例外
+        bookRepoository.findWithRental(bookId)?:throw IllegalArgumentException("存在しない書籍ID:${bookId}")
+        //存在する場合はdelete実行
+        bookRepoository.delete(bookId)
+    }
 }

@@ -8,6 +8,7 @@ import com.book.manager.bookmanager.infrastructure.database.mapper.BookMapper
 import com.book.manager.bookmanager.infrastructure.database.mapper.custom.BookWithRentalMapper
 import com.book.manager.bookmanager.infrastructure.database.mapper.custom.select
 import com.book.manager.bookmanager.infrastructure.database.mapper.custom.selectByPrimaryKey
+import com.book.manager.bookmanager.infrastructure.database.mapper.deleteByPrimaryKey
 import com.book.manager.bookmanager.infrastructure.database.record.custom.BookWithRentalRecord
 import com.book.manager.bookmanager.infrastructure.database.mapper.insert
 import com.book.manager.bookmanager.infrastructure.database.mapper.updateByPrimaryKeySelective
@@ -39,6 +40,10 @@ class BookRepositoryImpl(
      //nullが入ってきたカラムは更新されない
      override fun update(id: Long, title: String?, author: String?, releaseDate: LocalDate?) {
           bookMapper.updateByPrimaryKeySelective(BookRecord(id,title,author,releaseDate))
+     }
+
+     override fun delete(id: Long) {
+          bookMapper.deleteByPrimaryKey(id)
      }
      private fun toModel(record: BookWithRentalRecord): BookWithRental {
           val book = Book(
