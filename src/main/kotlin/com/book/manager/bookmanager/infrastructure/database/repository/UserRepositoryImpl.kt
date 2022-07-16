@@ -1,0 +1,31 @@
+package com.book.manager.bookmanager.infrastructure.database.repository
+
+import com.book.manager.bookmanager.domain.model.User
+import com.book.manager.bookmanager.domain.repositoory.UserRepository
+import com.book.manager.bookmanager.infrastructure.database.mapper.UserDynamicSqlSupport
+import com.book.manager.bookmanager.infrastructure.database.mapper.UserMapper
+import com.book.manager.bookmanager.infrastructure.database.mapper.selectOne
+import com.book.manager.bookmanager.infrastructure.database.record.UserRecord
+import org.mybatis.dynamic.sql.SqlBuilder.isEqualTo
+import org.springframework.stereotype.Repository
+
+@Suppress("SpringJavaInjectionPointsAutowiringInspection")
+@Repository
+class UserRepositoryImpl (private val mapper:UserMapper):UserRepository{
+    //メールアドレスを引数で受け取りwhereで指定して一致するデータを取得し、Userクラスに変換して返却
+    override fun find(email: String): User? {
+        val record = mapper.selectOne {
+            where(UserDynamicSqlSupport.User.email, isEqualTo(email))
+        }
+        return record?.let { toModel(it) }
+    }
+    private fun toModel(record: UserRecord): User {
+        return User(
+            record.id!!,
+            record.email!!,
+            record.password!!,
+            record.name!!,
+            record.roleType!!
+        )
+    }
+}
