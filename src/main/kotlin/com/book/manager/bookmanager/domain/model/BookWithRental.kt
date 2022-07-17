@@ -6,6 +6,7 @@ data class BookWithRental(
 //    データがない場合はnull
     val rental:Rental?,
 ){
+    //rentalの値をチェックし、貸出中かどうかのチェック
     val isRental:Boolean
         get()=rental!=null
 }
